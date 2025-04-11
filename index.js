@@ -51,6 +51,31 @@ app.post('/destinations', async (req, res) => {
   }
 });
 
+// PUT edit destinasi
+app.put('/destinations/:id', async (req, res) => {
+  const { name, date } = req.body;
+  try {
+    const updated = await Destination.findByIdAndUpdate(
+      req.params.id,
+      { name, date },
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: 'Gagal mengedit destinasi' });
+  }
+});
+
+// DELETE destinasi
+app.delete('/destinations/:id', async (req, res) => {
+  try {
+    await Destination.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Destinasi berhasil dihapus' });
+  } catch (err) {
+    res.status(400).json({ error: 'Gagal menghapus destinasi' });
+  }
+});
+
 // POST register user
 app.post('/users/register', async (req, res) => {
   const { name, email, password } = req.body;
